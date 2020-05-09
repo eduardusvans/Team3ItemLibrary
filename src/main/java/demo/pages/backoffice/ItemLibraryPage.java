@@ -3,6 +3,8 @@ package demo.pages.backoffice;
 import demo.utils.RandomUtils;
 import demo.webdriver.WebDriverInstance;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Random;
 
@@ -17,11 +19,11 @@ public class ItemLibraryPage {
     WebDriverInstance.webDriver.findElement(By.xpath("//button[contains(text(),'Create Item')]")).click();
   }
 
-  public void inputName() {
-    waitAbit(2000);
-    String randomName = RandomUtils.generateRandomFoodName();
-    WebDriverInstance.webDriver.findElement(By.xpath("//input[@placeholder='Item Name']")).sendKeys(randomName);
-  }
+    public void inputName(String randomName) {
+        waitAbit(2000);
+
+        WebDriverInstance.webDriver.findElement(By.xpath("//input[@placeholder='Item Name']")).sendKeys(randomName);
+    }
 
   public void inputPrice() {
     waitAbit(2000);
@@ -50,14 +52,21 @@ public class ItemLibraryPage {
 
   public void btnSave() {
     WebDriverInstance.webDriver.findElement(By.xpath("//button[@class='btn btn-primary no-outline']")).click();
-    waitAbit(2000);
+      waitAbit(2000);
   }
 
-  public void waitAbit(int milis) {
-    try {
-      Thread.sleep(milis);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    public void waitAbit(int milis) {
+        try {
+            Thread.sleep(milis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-  }
+
+    public boolean checkItemPresence(String randomName) {
+        String xpath = String.format("//td[contains(text(),'%s')]", randomName);
+        WebDriverWait wait = new WebDriverWait(WebDriverInstance.webDriver, 10);
+        return wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath))).isDisplayed();
+    }
+
 }

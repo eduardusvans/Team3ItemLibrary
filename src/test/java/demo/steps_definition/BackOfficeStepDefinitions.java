@@ -5,6 +5,7 @@ import demo.pages.backoffice.DashboardPage;
 import demo.pages.backoffice.ItemLibraryPage;
 import demo.pages.backoffice.LoginPage;
 import demo.pages.backoffice.ModifiersPage;
+import demo.utils.RandomUtils;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -13,6 +14,7 @@ import org.junit.Assert;
 
 public class BackOfficeStepDefinitions {
 
+  private static String randomName;
   LoginPage loginPage = new LoginPage();
   DashboardPage dashboardPage = new DashboardPage();
   CategoriesPage categoriesPage = new CategoriesPage();
@@ -70,7 +72,14 @@ public class BackOfficeStepDefinitions {
 
   @When("User input random item name on backoffice item library")
   public void userInputRandomItemNameOnBackofficeItemLibrary() {
-    itemLibraryPage.inputName();
+    randomName = RandomUtils.generateRandomFoodName();
+    itemLibraryPage.inputName(randomName);
+  }
+
+  @Then("User can see the new unique random item name on item list table")
+  public void userCanSeeTheNewUniqueRandomItemNameOnItemListTable() {
+    boolean status = itemLibraryPage.checkItemPresence(randomName);
+    Assert.assertTrue(status);
   }
 
   @When("User input random item price on backoffice item library")

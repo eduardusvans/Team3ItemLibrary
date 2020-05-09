@@ -15,4 +15,6 @@ Feature: Item Library
     And User choose modifier oreo on backoffice item library
     And User input item description on backoffice item library
     And User click save button on backoffice item library
+    Then User can see the new unique random item name on item list table
+
 
